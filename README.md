@@ -1,4 +1,4 @@
-# Managing SSL with Let's encrypt and nginx-controller on GKE
+# Automating SSL cert with Let's encrypt+cert-manager+nginx-controller on GKE
 
 * Let's Encrypt provides a browser-trusted certificate for web services.
 * In combination with **cert-manager**, a Kubernetes add-on, the management and issuance of TLS certificates from Let's Encrypt will be completely automated.
