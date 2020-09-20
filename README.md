@@ -6,6 +6,13 @@
 * As GKE does not provide a managed HTTPS offering, so it can be a bit daunting trying to take on the task of obtaining a valid TLS certificate without prior experience.
 * And since GKE also lacks built-in HTTP to HTTPs redirect for Google Cloud Load Balancers (GCLB), an NGINX ingress will be deployed to handle HTTP to HTTPs redirect.
 
+### Clone the Repo
+* Run the following command to clone the Github repository:
+```
+$ git clone https://github.com/thekubebuddy/letsencrypt-on-gke.git
+$ cd ./letsencrypt-on-gke/
+```
+
 ### Create a GKE cluster
 ```
 $ gcloud container clusters create demo-cluster --machine-type "n1-standard-1" --num-nodes 1 --zone us-central1-a --preemptible 
@@ -18,7 +25,7 @@ $ gcloud container clusters get-credentials demo-cluster --zone us-central1-a
 
 ### Deploy the hello-app deployment and the service manifest
 ```
-$ kubectl apply -f hello-dpl-svc.yaml
+$ kubectl apply -f ./hello-dpl-svc.yaml
 ```
 
 ### Install the nginx ingress controller
@@ -29,7 +36,7 @@ $ kubectl create clusterrolebinding cluster-admin-binding \
 --clusterrole cluster-admin --user $(gcloud config get-value account)
 
 # deploy the nginx-ingress-controller(v0.35.0) using the
-$ kubectl apply -f nginx-ingress-controller.yaml 
+$ kubectl apply -f ./nginx-ingress-controller.yaml 
 ```
 
 Note: Static Ip can also be used for the ingress-nginx-controller service, using "loadBalancerIP" attribute in the manifest file.
@@ -46,7 +53,7 @@ $ gcloud compute addresses delete nginx-ing-ip --region us-central1
 
 * Before deploying properly change the host as per needed within the ingress file
 ```
-k apply -f ./ingress.yaml
+kubectl apply -f ./ingress.yaml
 ```
 * Validate the ingress endpoint either by mapping the hostname to the **/et/hosts** file or more like mapping the ingress hostname with the ingress IP in the respective cloud DNS provider(or CloudDNS if primarily using)
 
