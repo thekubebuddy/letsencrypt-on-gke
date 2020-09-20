@@ -1,0 +1,20 @@
+# apiVersion: cert-manager.io/v1alpha2
+apiVersion: cert-manager.io/v1 #for the legacy cert-manager
+kind: Certificate
+metadata:
+  name: hello-app-tls
+  namespace: default
+spec:
+  secretName: hello-app-tls
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  commonName: hello-app-1.mydomain.com
+  dnsNames:
+  - hello-app-1.mydomain.com
+  acme:
+    config:
+    - http01:
+        ingress: hello-app-1-ingress #not mandatory as same as the ingress name
+      domains:
+      - hello-app-1.mydomain.com

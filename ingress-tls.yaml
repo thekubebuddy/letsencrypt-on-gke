@@ -1,0 +1,22 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: hello-app-ingress
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    ingress.kubernetes.io/ssl-redirect: "true"
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+  labels:
+    type: hello-app
+spec:
+  tls:
+  - hosts:
+    - hello-app-1.mydomain.com
+    secretName: hello-app-tls
+  rules:
+  - host: hello-app-1.mydomain.com
+    http:
+      paths:
+      - backend:
+          serviceName: hello-app-svc
+          servicePort: 80
