@@ -42,7 +42,7 @@ $ gcloud compute addresses list
 $ gcloud compute addresses delete nginx-ing-ip --region us-central1
 ```
 
-### Deploying the ingress for the hello-app without TLS 
+### Deploying the ingress for the "hello-app" without TLS 
 
 * Before deploying properly change the host as per needed within the ingress file
 ```
@@ -91,7 +91,7 @@ $ kubectl apply -f ./certificate.yaml --validate=false
 
 * Apply the final ingress with TLS enabled and SSL redirect 
 ```
-$ kubectl apply -f ./ingress-tls.yaml --validate=false
+$ kubectl apply -f ./ingress-tls.yaml
 ```
 
 * Confirm the endpoint with the just pasting the ingress host, if should automatically redirect to the HTTPS. 
@@ -105,4 +105,5 @@ $ gcloud container clusters delete demo-cluster --zone us-central1-a
 
 #### Reference
 https://kubernetes.github.io/ingress-nginx/deploy/#gce-gke
+
 https://cert-manager.io/docs/installation/kubernetes/
