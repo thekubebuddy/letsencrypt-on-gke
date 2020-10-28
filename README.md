@@ -13,22 +13,22 @@ $ git clone https://github.com/thekubebuddy/letsencrypt-on-gke.git
 $ cd ./letsencrypt-on-gke/
 ```
 
-### Create a GKE cluster
+### GKE cluster creation
 ```
 $ gcloud container clusters create demo-cluster --machine-type "n1-standard-1" --num-nodes 1 --zone us-central1-a --preemptible 
 ```
 
-### Connect to the cluster 
+### Connecting to the GKE cluster 
 ```
 $ gcloud container clusters get-credentials demo-cluster --zone us-central1-a
 ```
 
-### Deploy the hello-app deployment and the service manifest
+### Deployment of the "hello-app" 
 ```
 $ kubectl apply -f ./hello-dpl-svc.yaml
 ```
 
-### Install the nginx ingress controller
+### Installation of the nginx-ingress controller
 
 * Assign yourself the cluster-admin role by running the following command:
 ```
@@ -39,8 +39,10 @@ $ kubectl create clusterrolebinding cluster-admin-binding \
 $ kubectl apply -f ./nginx-ingress-controller.yaml 
 ```
 
-Note: Static Ip can also be used for the ingress-nginx-controller service, using "loadBalancerIP" attribute in the manifest file.
-For reserving static IP in GCP
+>Note: Static Ip can also be used for the ingress-nginx-controller service, using "loadBalancerIP" attribute in the nginx-ingress-controller.yaml manifest file.
+> Also For private GKE cluster, you will need to either add an additional firewall rule that allows master nodes access to port 8443/tcp on worker nodes, or change the existing rule that allows access to ports 80/tcp, 443/tcp and 10254/tcp to also allow access to port 8443/tcp.
+
+For reserving static IP in GCP use the below gcloud command
 ```
 $ gcloud compute addresses create nginx-ing-ip --region us-central1
 $ gcloud compute addresses list
@@ -49,16 +51,17 @@ $ gcloud compute addresses list
 $ gcloud compute addresses delete nginx-ing-ip --region us-central1
 ```
 
-### Deploying the ingress for the "hello-app" without TLS 
+### Ingress for the "hello-app" without TLS 
 
-* Before deploying properly change the host as per needed within the ingress file
+* Before deploying change the host-name as per needed within the ingress file
 ```
 kubectl apply -f ./ingress.yaml
 ```
-* Validate the ingress endpoint either by mapping the hostname to the **/et/hosts** file or more like mapping the ingress hostname with the ingress IP in the respective cloud DNS provider(or CloudDNS if primarily using)
+
+* Validate the ingress endpoint either by mapping the hostname to the **/etc/hosts** file or mapping the ingress hostname with the ingress IP in the respective cCoud DNS provider(or CloudDNS if primarily used)
 
 
-### Setting the Let's Encrypt
+### Setting-up the Let's Encrypt
 
 * Installing the cert-manager on the GKE cluster
 ```
@@ -86,7 +89,7 @@ $ cat letsencrypt-issuer.yaml | sed "s/email: ''/email: $EMAIL/g" | kubectl appl
 $ k get clusterissuers.cert-manager.io 
 ```
 
-### Creating the certificate for the ingress
+### Certificate creation for the hello-app ingress
 
 * Map the DNS(from cloud DNS if used) for the hostname with the Ingress IP so that the Certificate can be easily provisioned 
 
@@ -94,6 +97,7 @@ $ k get clusterissuers.cert-manager.io
 ```
 $ kubectl apply -f ./certificate.yaml --validate=false
 ```
+
 * The above certificate will generate the TLS secret within the namespace.
 
 * Apply the final ingress with TLS enabled and SSL redirect 
