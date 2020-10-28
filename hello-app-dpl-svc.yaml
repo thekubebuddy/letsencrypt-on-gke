@@ -25,7 +25,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: hello-app-svc
+  name: helloapp-v1-svc
   labels:
     type: hello-app
 spec:

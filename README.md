@@ -15,7 +15,7 @@ $ cd ./letsencrypt-on-gke/
 
 ### GKE cluster creation
 ```
-$ gcloud container clusters create demo-cluster --machine-type "n1-standard-1" --num-nodes 1 --zone us-central1-a --preemptible 
+$ gcloud container clusters create demo-cluster --machine-type "n1-standard-1" --num-nodes 2 --zone us-central1-a --preemptible 
 ```
 
 ### Connecting to the GKE cluster 
@@ -59,16 +59,6 @@ $ kubectl get pods,svc --namespace ingress-nginx
 ### Installation of the ExternalDNS for managing the DNS Mapping(Optional) 
 
 
-### Ingress for the "hello-app" without TLS 
-
-* Before deploying change the host-name as per needed within the ingress file
-```
-kubectl apply -f ./ingress.yaml
-```
-
-* Validate the ingress endpoint either by mapping the hostname to the **/etc/hosts** file or mapping the ingress hostname with the ingress IP in the respective cCoud DNS provider(or CloudDNS if primarily used)
-
-
 ### Setting-up the Let's Encrypt
 
 * Installing the cert-manager on the GKE cluster
@@ -97,20 +87,19 @@ $ cat letsencrypt-issuer.yaml | sed "s/email: ''/email: $EMAIL/g" | kubectl appl
 $ kubectl get clusterissuers.cert-manager.io 
 ```
 
-### Certificate creation for the hello-app ingress
+### Certificate & ingress creation 
 
 * (Required) Map the DNS(from cloud DNS if used) for the hostname with the Ingress IP so that the Certificate can be easily provisioned 
+Or
+If its being managed by the externalDNS then no need to map the DNS.
 
-* Open the certificate file and make changes for the   `commonName`,`dnsNames`,`domains` attribute as per the ingress host name. Finally apply the certificate
-```
-$ kubectl apply -f ./certificate.yaml --validate=false
-```
+* Open the cert-ingress.yaml file and make changes for the   `commonName`,`dnsNames`,`domains` attribute as per the ingress host name. Finally apply the certificate
 
 * The above certificate will generate the TLS secret **"hello-app-tls"** within the namespace.
 
 * Apply the final ingress with TLS enabled and SSL redirect 
 ```
-$ kubectl apply -f ./ingress-tls.yaml
+$ kubectl apply -f ./cert-ingress.yaml --validate=false
 ```
 
 * Confirm the endpoint with the just pasting the ingress host, if should automatically redirect to the HTTPS. 

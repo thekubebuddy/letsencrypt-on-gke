@@ -56,9 +56,9 @@ spec:
         - --domain-filter=ext-dns.mydomain.org # will make ExternalDNS see only the hosted zones matching provided domain, omit to process all available hosted zones
         - --provider=google
         - --google-project=<project-name> # Use this to specify a project different from the one external-dns is running inside
-        - --policy=upsert-only # would prevent ExternalDNS from deleting any records, omit to enable full synchronization
         - --registry=txt
         - --txt-owner-id=k8s
+        # - --policy=upsert-only # would prevent ExternalDNS from deleting any records, omit to enable full synchronization
       #   volumeMounts:
       #   - name: google-cloud-sa-key
       #     mountPath: /var/secrets/google

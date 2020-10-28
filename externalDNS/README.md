@@ -77,3 +77,6 @@ spec:
   type: LoadBalancer
 ```
 
+```
+https://github.com/kubernetes-sigs/external-dns/blob/master/docs/tutorials/gke.md
+```
