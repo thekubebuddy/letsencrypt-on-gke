@@ -25,7 +25,7 @@ $ gcloud container clusters get-credentials demo-cluster --zone us-central1-a
 
 ### Deployment of the "hello-app" 
 ```
-$ kubectl apply -f ./hello-dpl-svc.yaml
+$ kubectl apply -f ./hello-app-dpl-svc.yaml
 ```
 
 ### Installation of the nginx-ingress controller
@@ -51,6 +51,13 @@ $ gcloud compute addresses list
 # for the deleting the ext-ip
 $ gcloud compute addresses delete nginx-ing-ip --region us-central1
 ```
+* Verify that nginx-controller was installed properly:
+```
+$ kubectl get pods,svc --namespace ingress-nginx
+```
+
+### Installation of the ExternalDNS for managing the DNS Mapping(Optional) 
+
 
 ### Ingress for the "hello-app" without TLS 
 
@@ -74,9 +81,9 @@ $ kubectl apply --validate=false -f https://github.com/jetstack/cert-manager/rel
 $ kubectl apply --validate=false -f https://github.com/jetstack/cert-manager/releases/download/v1.0.1/cert-manager-legacy.yaml
 ```
 
-* Verify that cert-manager was installed:
+* Verify that cert-manager was installed properly and all of the pods are running:
 ```
-kubectl get pods --namespace cert-manager
+$ kubectl get pods --namespace cert-manager
 ```
 
 * Deploy the  Let's Encrypt issuer to issue TLS certificates. Deploy the Issuer manifest using the following commands:
@@ -86,8 +93,8 @@ $ export EMAIL="your-email@your-domain.com"
 # Deploying the clusterissuer manifest
 $ cat letsencrypt-issuer.yaml | sed "s/email: ''/email: $EMAIL/g" | kubectl apply -f-
 
-# verify that the clusterissuer properly configured
-$ k get clusterissuers.cert-manager.io 
+# verify that the clusterissuer properly configured & status is set to True
+$ kubectl get clusterissuers.cert-manager.io 
 ```
 
 ### Certificate creation for the hello-app ingress
@@ -99,7 +106,7 @@ $ k get clusterissuers.cert-manager.io
 $ kubectl apply -f ./certificate.yaml --validate=false
 ```
 
-* The above certificate will generate the TLS secret within the namespace.
+* The above certificate will generate the TLS secret **"hello-app-tls"** within the namespace.
 
 * Apply the final ingress with TLS enabled and SSL redirect 
 ```
