@@ -24,8 +24,10 @@ $ kubectl create ns external-dns
 ....
 ....
 ```
+* Apply the install manifest file
+
 ```
-$ kubectl apply -f ./install-manifest.yaml
+$ kubectl apply -f ./install-manifest.yaml -n external-dns 
 ```
 
 * Check the logs as well as the status for the externalDNS pod
