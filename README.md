@@ -39,8 +39,8 @@ $ kubectl create clusterrolebinding cluster-admin-binding \
 $ kubectl apply -f ./nginx-ingress-controller.yaml 
 ```
 
->Note: Static Ip can also be used for the ingress-nginx-controller service, using "loadBalancerIP" attribute in the nginx-ingress-controller.yaml manifest file.
-> Also For private GKE cluster, you will need to either add an additional firewall rule that allows master nodes access to port 8443/tcp on worker nodes, or change the existing rule that allows access to ports 80/tcp, 443/tcp and 10254/tcp to also allow access to port 8443/tcp.
+**Note: Static IP can also be used for the ingress-nginx-controller service, using "loadBalancerIP" attribute in the nginx-ingress-controller.yaml manifest file.**
+**Also For private GKE cluster, you will need to either add an additional firewall rule that allows master nodes access to port 8443/tcp on worker nodes, or change the existing rule that allows access to ports 80/tcp, 443/tcp and 10254/tcp to also allow access to port 8443/tcp.**
 
 For reserving static IP in GCP use the below gcloud command
 ```
