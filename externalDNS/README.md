@@ -13,6 +13,18 @@
 * Create a namespace `external-dns` and deploy the manifest
 ```
 $ kubectl create ns external-dns
+```
+* Change the values for the below argument within the install-manifest.yaml
+```
+....
+....
+        - --domain-filter=ext-dns.mydomain.org # will make ExternalDNS see only the hosted zones matching provided domain, omit to process all available hosted zones
+        ...
+        - --google-project=<gcp-project-name> # Use this to specify a project different from the one external-dns is running inside
+....
+....
+```
+```
 $ kubectl apply -f ./install-manifest.yaml
 ```
 
