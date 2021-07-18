@@ -19,7 +19,7 @@ metadata:
 spec:
   acme:
     server: https://acme-staging-v02.api.letsencrypt.org/directory
-    email: ''
+    email: $EMAIL_ID
     privateKeySecretRef:
       name: letsencrypt-staging
     solvers:
@@ -35,7 +35,7 @@ metadata:
 spec:
   acme:
     server: https://acme-v02.api.letsencrypt.org/directory
-    email: ''
+    email: $EMAIL_ID
     privateKeySecretRef:
       name: letsencrypt-prod
     solvers:

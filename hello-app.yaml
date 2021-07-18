@@ -2,7 +2,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: hello-app-dpl
+  name: helloapp-dpl
   labels:
     app: hello-app
 spec:
@@ -25,14 +25,30 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: helloapp-v1-svc
+  name: helloapp-svc
   labels:
     type: hello-app
 spec:
-  type: NodePort
   ports:
   - port: 80
     protocol: TCP
     targetPort: 8080
   selector:
     app: hello-app
+# ---
+# apiVersion: extensions/v1beta1
+# kind: Ingress
+# metadata:
+#   name: helloapp-ingress
+#   annotations:
+#     kubernetes.io/ingress.class: nginx
+#     nginx.ingress.kubernetes.io/ssl-redirect: "false"
+# spec:
+#   rules:
+#   - host: $INGRESS_HOSTNAME
+#     http:
+#       paths:
+#       - path: /hello
+#         backend:
+#           serviceName: helloapp-svc
+#           servicePort: 80

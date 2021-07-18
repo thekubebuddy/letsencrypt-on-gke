@@ -23,6 +23,7 @@ kind: Service
 metadata:
   annotations:
     external-dns.alpha.kubernetes.io/hostname: nginx-app.ext-dns.mydomain.org
+    external-dns.alpha.kubernetes.io/ttl: "60" #TTL 60sec
   name: nginx
 spec:
   ports:

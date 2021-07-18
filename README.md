@@ -15,7 +15,9 @@ $ cd ./letsencrypt-on-gke/
 
 ### GKE cluster creation
 ```
-$ gcloud container clusters create demo-cluster --machine-type "n1-standard-1" --num-nodes 2 --zone us-central1-a --preemptible 
+$ gcloud container clusters create demo-cluster --machine-type "e2-medium" --num-nodes 2 --zone us-central1-a --preemptible --labels=owner=ishaq --subnetwork=us-central1  --network=default
+
+us-ct1-pvt-app-subnet-ishaq
 ```
 
 ### Connecting to the GKE cluster 
@@ -78,10 +80,10 @@ $ kubectl get pods --namespace cert-manager
 
 * Deploy the  Let's Encrypt issuer to issue TLS certificates. Deploy the Issuer manifest using the following commands:
 ```
-$ export EMAIL="your-email@your-domain.com"
+$ export EMAIL_ID="your-email@your-domain.com"
 
 # Deploying the clusterissuer manifest
-$ cat letsencrypt-issuer.yaml | sed "s/email: ''/email: $EMAIL/g" | kubectl apply -f-
+$ sed "s/EMAIL_ID/$EMAIL_ID/g" letsencrypt-issuer.yaml.tpl | kubectl apply -f-
 
 # verify that the clusterissuer properly configured & status is set to True
 $ kubectl get clusterissuers.cert-manager.io 

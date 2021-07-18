@@ -1,0 +1,42 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: hello-app-tls
+  namespace: default
+spec:
+  secretName: hello-app-tls
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  commonName: $INGRESS_HOSTNAME
+  dnsNames:
+  - $INGRESS_HOSTNAME
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: hello-app-ingress
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    ingress.kubernetes.io/ssl-redirect: "true"
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    external-dns.alpha.kubernetes.io/ttl: "1m"
+  labels:
+    type: hello-app
+spec:
+  tls:
+  - hosts:
+    - $INGRESS_HOSTNAME
+    secretName: hello-app-tls
+  rules:
+  - host: $INGRESS_HOSTNAME
+    http:
+      paths:
+      - path: /
+        pathType: Exact
+        backend:
+          service:
+            name: helloapp-svc
+            port:
+              number: 80
