@@ -2,7 +2,7 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: hello-app-tls
+  name: hello-app-cert
   namespace: default
 spec:
   secretName: hello-app-tls
