@@ -275,6 +275,7 @@ metadata:
   namespace: ingress-nginx
 spec:
   type: LoadBalancer
+  loadBalancerIP: $STATIC_EXTERNAL_IP
   externalTrafficPolicy: Local
   ports:
     - name: http
